@@ -1,0 +1,37 @@
+<div class="card">
+    <p-table [value]="labour" (sortFunction)="customSort($event)" [customSort]="true">
+        <ng-template pTemplate="header" >
+            <tr>
+                <th pSortableColumn="payroll_Providers">PLAYROLL PROVIDER <p-sortIcon field="PLAYROLL_PROVIDER"></p-sortIcon></th>
+                <th pSortableColumn="worker">WORKER <p-sortIcon field="WORKER"></p-sortIcon></th>
+                <th pSortableColumn="compliance">COMPLIANCE SCORE <p-sortIcon field="COMPLIANCE_SCORE"></p-sortIcon></th>
+                <th pSortableColumn="grossPay" class="p-text-right">GROSS PAY<p-sortIcon field="GROSS_PAY"></p-sortIcon></th>
+                <th pSortableColumn="payAdmin">PAYROLL ADMIN <p-sortIcon field="PAYROLL_ADMIN"></p-sortIcon></th>
+                <th pSortableColumn="labourCost">LABOUR COST <p-sortIcon field="LABOUR_COST"></p-sortIcon></th>
+                <th class="p-text-right" pSortableColumn="workForce">WORK-FORCE <p-sortIcon field="WORK_FORCE"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+            <tr>
+                <td class="p-text-left">{{data.payroll_Providers}}</td>
+                <td class="p-text-center">{{data.worker}}</td>
+                <td class="p-text-center">{{data.compliance | labourPercent: '0' }}</td>
+                <td class="p-text-right" style="border-left: 1px solid #B4B4B4; padding-left: 10px;">{{ data.grossPay | number:'.0-0'}}</td>
+                <td class="p-text-center">{{data.payAdmin != 0? data.payAdmin : '-' }}</td>
+                <td class="p-text-center">{{data.labourCost | number:'.0-0'}}</td>
+                <td class="p-text-center" style="border-left: 1px solid #B4B4B4; padding-left: 10px;">{{data.workForce | labourPercent: '1'}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <tr class="p-text.center">
+                <td class="p-text-center">{{labourTotal.name}}</td>
+                <td class="p-text-center">{{labourTotal.workerCount}}</td>
+                <td class="p-text-center">{{labourTotal.complianceStats.Total | labourPercent: '0'}}</td>
+                <td class="p-text-right" style="border-left: 1px solid #B4B4B4; padding-left: 10px;">{{labourTotal.grossPayTotal | number:'.0-0'}}</td>
+                <td class="p-text-center">{{labourTotal.payrollAdminTotal != 0? labourTotal.payrollAdminTotal : '-' }}</td>
+                <td class="p-text-center">{{labourTotal.labourCostTotal | number:'.0-0'}}</td>
+                <td class="p-text-center" style="border-left: 1px solid #B4B4B4; padding-left: 10px;">{{ (labourTotal.workerCount * 100 ) / labourTotal.workerCount | labourPercent: '0'}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>
