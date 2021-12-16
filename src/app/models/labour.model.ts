@@ -1,9 +1,12 @@
+import { Compliance } from "./compliance.model";
+
 export class Labour {
-    payroll_Providers: string;
-    worker: number;
-    compliance: number;
-    grossPay: number;
-    payAdmin: number;
-    labourCost: number;
-    workForce: number;
+    rebatesTotal: number;
+    grossPayTotal: number;
+    workerCount: number;
+    complianceStats: Compliance;
+    payrollAdminTotal: number;
+    labourCostTotal: number;
+    providerId: number;
+    name: string
 }

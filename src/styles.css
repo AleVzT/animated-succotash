@@ -1,13 +1,10 @@
-body {
-    padding: 5rem;
+body { 
     font-family: 'Open Sans';
+    padding: 4rem; 
 }
 
-.p-component {
-    font-family: 'Open Sans' !important;
-    font-size: 0.8rem !important;
-}
-
-.pi {
-    font-size: 0.7rem !important;
+@media (max-width: 600px) {
+    body { 
+        padding: 0rem; 
+    }
 }

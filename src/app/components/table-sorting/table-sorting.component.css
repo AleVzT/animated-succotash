@@ -1,8 +1,81 @@
-.title {
-    font-size: 1rem !important
+:host {
+  padding: 2.5rem 2.063rem;
+  display: block;
+}
+h1 {
+  font-weight: lighter;
+  font-size: 23px;
+  line-height: 1;
+  color: #2e3236;
+  margin: 0 0 2.5rem;
+}
+.table-wrapper {
+  margin: 0 -1.25rem;
+  overflow-x: auto;
+}
+table {
+  border-spacing: 0;
+  border-collapse: separate;
+}
+table .text-big {
+  font-size: 19px;
+  font-weight: lighter;
+}
+table .text-darker {
+  color: #2e3236;
+}
+table th {
+  font-size: 10px;
+  line-height: 12px;
+  text-align: left;
+}
+table th, table td {
+  max-width: 7.188rem;
+  padding: 0 1.25rem;
+}
+table thead th {
+  font-weight: lighter;
+  text-transform: uppercase;
+  color: #bcc0c2;
+  padding-bottom: 2.375rem;
+  padding-right: calc(1.25rem - 0.417rem);
+  vertical-align: top;
+}
+table thead th.text-right > app-sorting {
+  float: right;
+  text-align: right;
+}
+table tbody {
+  color: #b3b7ba;
+}
+table tbody th {
+  font-weight: normal;
+  animation: fadeIn;
+  animation-duration: 2s;
+}
+table tbody td {
+  padding: 0.813rem 1.25rem;
+  animation: fadeIn;
+  animation-duration: 2s;
+}
+table tbody td:not(.text-big) {
+  font-weight: normal;
+  font-size: 12px;
+}
+table tfoot th {
+  text-transform: uppercase;
+  text-align: right;
+}
+table tfoot td:not(.text-big) {
+  font-size: 12px;
+}
+table .border-right {
+  border-right: 1px solid #dde2e5;
+}
+.text-right {
+  text-align: right;
 }
 
-.payColums{
-    border-left: 1px solid #B4B4B4; 
-    padding-left: 10px;
+.jumpLine {
+  display: block;
 }

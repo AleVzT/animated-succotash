@@ -1,37 +1,88 @@
-<div class="card">
-    <p-table [value]="labour" (sortFunction)="customSort($event)" [customSort]="true">
-        <ng-template pTemplate="header" >
-            <tr>
-                <th pSortableColumn="payroll_Providers">PLAYROLL PROVIDER <p-sortIcon field="PLAYROLL_PROVIDER"></p-sortIcon></th>
-                <th pSortableColumn="worker">WORKER <p-sortIcon field="WORKER"></p-sortIcon></th>
-                <th pSortableColumn="compliance">COMPLIANCE SCORE <p-sortIcon field="COMPLIANCE_SCORE"></p-sortIcon></th>
-                <th pSortableColumn="grossPay" class="p-text-right">GROSS PAY<p-sortIcon field="GROSS_PAY"></p-sortIcon></th>
-                <th pSortableColumn="payAdmin">PAYROLL ADMIN <p-sortIcon field="PAYROLL_ADMIN"></p-sortIcon></th>
-                <th pSortableColumn="labourCost">LABOUR COST <p-sortIcon field="LABOUR_COST"></p-sortIcon></th>
-                <th class="p-text-right" pSortableColumn="workForce">WORK-FORCE <p-sortIcon field="WORK_FORCE"></p-sortIcon></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-data>
-            <tr>
-                <td class="p-text-left">{{data.payroll_Providers}}</td>
-                <td class="p-text-center">{{data.worker}}</td>
-                <td class="p-text-center">{{data.compliance | labourPercent: '0' }}</td>
-                <td class="p-text-right payColums">{{ data.grossPay | number:'.0-0'}}</td>
-                <td class="p-text-center">{{data.payAdmin != 0? data.payAdmin : '-' }}</td>
-                <td class="p-text-center">{{data.labourCost | number:'.0-0'}}</td>
-                <td class="p-text-center payColums">{{data.workForce | labourPercent: '1'}}</td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <tr class="p-text.center">
-                <td class="p-text-center">{{labourTotal.name}}</td>
-                <td class="p-text-center">{{labourTotal.workerCount}}</td>
-                <td class="p-text-center">{{labourTotal.complianceStats.Total | labourPercent: '0'}}</td>
-                <td class="p-text-right payColums">{{labourTotal.grossPayTotal | number:'.0-0'}}</td>
-                <td class="p-text-center">{{labourTotal.payrollAdminTotal != 0? labourTotal.payrollAdminTotal : '-' }}</td>
-                <td class="p-text-center">{{labourTotal.labourCostTotal | number:'.0-0'}}</td>
-                <td class="p-text-center payColums">{{ (labourTotal.workerCount * 100 ) / labourTotal.workerCount | labourPercent: '0'}}</td>
-            </tr>
-        </ng-template>
-    </p-table>
+<div class="table-wrapper">
+    <table *ngIf="dataTable">
+      <thead>
+      <tr>
+        <th>
+          <app-sorting  [active]="sortColumn === 1" 
+                        (onShift)="sortByPayrollProvider($event)">
+                        Payroll <span class="jumpLine">provider</span>
+          </app-sorting>
+        </th>
+        <th>
+          <app-sorting  [active]="sortColumn === 2" 
+                        (onShift)="sortByWorker($event)">Worker
+          </app-sorting>
+        </th>
+        <th>
+          <app-sorting  [active]="sortColumn === 3" 
+                        (onShift)="sortByComplianceScore($event)">
+                        Compliance <span class="jumpLine">score</span>
+          </app-sorting>
+        </th>
+        <th class="text-right">
+          <app-sorting  [active]="sortColumn === 4" 
+                        (onShift)="sortByGrossPay($event)">
+                        Gross <span class="jumpLine">pay (₤)</span>
+          </app-sorting>
+        </th>
+        <th class="text-right">
+          <app-sorting  [active]="sortColumn === 5" 
+                        (onShift)="sortByPayrollAdmin($event)">
+                        Payroll <span class="jumpLine">admin (₤)</span>
+          </app-sorting>
+        </th>
+        <th class="text-right">
+          <app-sorting  [active]="sortColumn === 6" 
+                        (onShift)="sortByLabourCost($event)">
+                        Labour <span class="jumpLine">cost (₤)</span>
+          </app-sorting>
+        </th>
+        <th>
+          <app-sorting  [active]="sortColumn === 7" 
+                        (onShift)="sortByWorkForce($event)">
+                        Work <span class="jumpLine">force</span>
+          </app-sorting>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template [ngIf]="dataTableRows">
+        <tr *ngFor="let col of dataTableRows">
+          <th [ngClass]="formatColumn(1)">{{ col.name }}</th>
+          <td [ngClass]="formatColumn(2, false, true)">{{ col.workerCount | number }}</td>
+          <td [ngClass]="formatColumn(3, true)">{{ computeComplianceScore(col) | percent }}</td>
+          <td [ngClass]="formatColumn(4, false, true, true)">{{ col.grossPayTotal | labourNumber }}</td>
+          <td [ngClass]="formatColumn(5, false, false, true)">{{ col.payrollAdminTotal ? col.payrollAdminTotal : '-'}}</td>
+          <td [ngClass]="formatColumn(6, true, true, true)">{{ col.labourCostTotal | labourNumber }}</td>
+          <td [ngClass]="formatColumn(7)">{{ computeWorkForce(col) | labourPercent: '1'}}</td>
+        </tr>
+        <tr>
+          <td colspan="7"></td>
+        </tr>
+      </ng-template>
+      <tr *ngFor="let col of dataTable">
+        <th [ngClass]="formatColumn(1)">{{ col.name }}</th>
+        <td [ngClass]="formatColumn(2, false, true)">{{ col.workerCount | number }}</td>
+        <td [ngClass]="formatColumn(3, true)">{{ computeComplianceScore(col) | percent }}</td>
+        <td [ngClass]="formatColumn(4, false, true, true)">{{ col.grossPayTotal | labourNumber }}</td>
+        <td [ngClass]="formatColumn(5, false, false, true)">{{ col.payrollAdminTotal ? col.payrollAdminTotal : '-'}}</td>
+        <td [ngClass]="formatColumn(6, true, true, true)">{{ col.labourCostTotal | labourNumber }}</td>
+        <td [ngClass]="formatColumn(7)">{{ computeWorkForce(col) | labourPercent: '1' }}</td>
+      </tr>
+      <tr>
+        <td colspan="7"></td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <th>Total</th>
+        <td class="text-big">{{ total[0].workerCount | number }}</td>
+        <td class="border-right">{{ computeComplianceScore(total[0]) | percent }}</td>
+        <td class="text-big text-right">{{ total[0].grossPayTotal | labourNumber }}</td>
+        <td class="text-right">{{ total[0].payrollAdminTotal ? total[0].payrollAdminTotal : '-'}}</td>
+        <td class="text-big text-right border-right">{{ total[0].labourCostTotal | labourNumber }}</td>
+        <td>{{ computeWorkForce(total[0]) | percent }}</td>
+      </tr>
+      </tfoot>
+    </table>
   </div>

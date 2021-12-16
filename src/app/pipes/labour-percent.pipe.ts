@@ -8,6 +8,8 @@ export class LabourPercentPipe implements PipeTransform {
   transform(value: number,  ...args: unknown[]): string {
 
     let resp: string;
+    
+    value = value * 100
 
     if( args[0] == '0' ){
       resp = `${value.toFixed(0)} %`
